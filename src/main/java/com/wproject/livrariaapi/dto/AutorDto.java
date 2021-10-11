@@ -12,6 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AutorDto {
+	
+	private Long id;
 	private String nome;
 	private String email;
 	private String curriculo;

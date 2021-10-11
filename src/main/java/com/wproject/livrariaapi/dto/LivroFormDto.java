@@ -2,6 +2,7 @@ package com.wproject.livrariaapi.dto;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.wproject.livrariaapi.model.Autor;
 
 import lombok.AllArgsConstructor;
@@ -36,8 +38,11 @@ public class LivroFormDto {
 	
 	@NotNull
 	@Min(100)
+	@JsonAlias("paginas")
 	private int numeroPagina;
 	
+	
 	@NotNull
-	private AutorFormDto autor;
+	@JsonAlias("autor_id")
+	private Long autorId;
 }

@@ -14,6 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LivroDto {
+	
+	private Long id;
 	private String titulo;
 	private LocalDate lancamento;
 	private int numeroPagina;
