@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +17,21 @@ import org.springframework.stereotype.Service;
 
 
 import com.wproject.livrariaapi.dto.LivroDto;
+import com.wproject.livrariaapi.dto.LivroFormAtualizacaoDto;
 import com.wproject.livrariaapi.dto.LivroFormDto;
+import com.wproject.livrariaapi.model.Autor;
 import com.wproject.livrariaapi.model.Livro;
+import com.wproject.livrariaapi.repository.AutorRepository;
 import com.wproject.livrariaapi.repository.LivroRepository;
 
 @Service
 public class LivroService {
 	@Autowired
 	private LivroRepository repository;
+	
+	@Autowired
+	private AutorRepository repositoryAutor;
+	
 	private ModelMapper modelMapper = new ModelMapper();
 	
 	public Page<LivroDto> listar(Pageable page){
@@ -31,11 +40,38 @@ public class LivroService {
 	}
 
 	@Transactional
-	public LivroDto inserir(LivroFormDto autor) {
-		Livro livro = modelMapper.map(autor, Livro.class);
-		livro.setId(null);
-		repository.save(livro);
+	public LivroDto inserir(LivroFormDto livros) {
+		try {
+			Autor autor = repositoryAutor.getById(livros.getAutorId());
+			Livro livro = modelMapper.map(livros, Livro.class);
+			livro.setId(null);
+			livro.setAutor(autor);
+			repository.save(livro);
+			return modelMapper.map(livro, LivroDto.class);
+			
+		} catch (EntityNotFoundException e) {
+			throw new IllegalArgumentException("Autor inexistente");
+		}
+	}
+
+	public LivroDto listarPorId(Long id) {
+		Livro livro = repository.findById(id).orElseThrow(()->new EntityNotFoundException());
 		return modelMapper.map(livro, LivroDto.class);
+	}
+
+	@Transactional
+	public LivroDto atualizar(@Valid LivroFormAtualizacaoDto dto) {
+		Livro livro = repository.getById(dto.getId());
+		livro.atualizarInfo(
+				dto.getTitulo(),
+				dto.getLancamento(),
+				dto.getNumeroPagina()
+				);
+		return modelMapper.map(livro, LivroDto.class);	}
+
+	@Transactional
+	public void deletar(Long id) {
+		repository.deleteById(id);
 	}
 			
 }

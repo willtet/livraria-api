@@ -29,4 +29,21 @@ public class Autor {
 	private String email;
 	private LocalDate nascimento;
 	private String curriculo;
+	
+	public Autor(String nome, String email, LocalDate nascimento, String curriculo) {
+		this.nome = nome;
+		this.email = email;
+		this.nascimento = nascimento;
+		this.curriculo = curriculo;
+		
+	}
+	
+	
+	public void atualizar(String nome, String email, LocalDate nascimento, String curriculo) {
+		this.nome = nome;
+		this.email = email;
+		this.nascimento = nascimento;
+		this.curriculo = curriculo;
+		
+	}
 }

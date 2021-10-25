@@ -1,7 +1,8 @@
 package com.wproject.livrariaapi.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,11 +13,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AutorDto {
-	
+public class LivroFormAtualizacaoDto extends LivroFormDto{
 	private Long id;
-	private String nome;
-	private String email;
-	private String curriculo;
-	private LocalDate nascimento;
 }
