@@ -2,10 +2,13 @@ package com.wproject.livrariaapi.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.wproject.livrariaapi.dto.QuantidadePublicadoDto;
+import com.wproject.livrariaapi.model.Autor;
 import com.wproject.livrariaapi.model.Livro;
 
 public interface LivroRepository extends JpaRepository<Livro, Long>{
@@ -16,5 +19,7 @@ public interface LivroRepository extends JpaRepository<Livro, Long>{
 			+ "(select count(*) from Livro l where autor_id = a.id) * 1.0 / (select count(*) from Livro l2)"
 			+ ") from Autor a")
 	List<QuantidadePublicadoDto> listarRelatorioQuantidadeLivro();
+
+	Page<Livro> findAllByAutor(Pageable page, Autor autor);
 
 }

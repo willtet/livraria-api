@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,8 @@ import com.wproject.livrariaapi.service.AutorService;
 import com.wproject.livrariaapi.service.LivroService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/livro")
@@ -42,16 +45,21 @@ public class LivroController {
 	private LivroService service;
 	
 	@GetMapping
-	public Page<LivroDto> listar(@PageableDefault(size = 10) Pageable page){
+	@ApiOperation("Listar todos os livros")
+	public Page<LivroDto> listar(
+			@PageableDefault(size = 10) Pageable page){
 		return service.listar(page);
 	}
 	
 	@GetMapping("/{id}")
-	public LivroDto listarPorId(@PathVariable Long id){
+	@ApiOperation("Listar livro por id")
+	public LivroDto listarPorId(
+			@PathVariable Long id){
 		return service.listarPorId(id);
 	}
 	
 	@PostMapping
+	@ApiOperation("Cadastrar livros")
 	public ResponseEntity<LivroDto> inserir(
 			@RequestBody @Valid LivroFormDto livro,
 			UriComponentsBuilder builder){
@@ -64,12 +72,15 @@ public class LivroController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<LivroDto> atualizar(@RequestBody @Valid LivroFormAtualizacaoDto livro) {
+	@ApiOperation("Atualizar livros")
+	public ResponseEntity<LivroDto> atualizar(
+			@RequestBody @Valid LivroFormAtualizacaoDto livro) {
 		LivroDto livroDto = service.atualizar(livro);
 		return ResponseEntity.ok(livroDto);
 	}
 	
 	@DeleteMapping("/{id}")
+	@ApiOperation("Deletar livros")
 	public ResponseEntity<LivroDto> deletar(@PathVariable Long id) {
 		service.deletar(id);
 		return ResponseEntity.noContent().build();

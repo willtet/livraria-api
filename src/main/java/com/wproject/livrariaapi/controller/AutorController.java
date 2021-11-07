@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,8 @@ import com.wproject.livrariaapi.model.Autor;
 import com.wproject.livrariaapi.service.AutorService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/autor")
@@ -39,16 +42,19 @@ public class AutorController {
 	private AutorService service;
 	
 	@GetMapping
+	@ApiOperation("Listar todos os Autores")
 	public Page<AutorDto> listar(@PageableDefault(size=20) Pageable paginacao){
 		return service.listar(paginacao);
 	}
 	
 	@GetMapping("/{id}")
+	@ApiOperation("Listar Autor por id")
 	public AutorDto listarPorId(@PathVariable Long id){
 		return service.listarPorId(id);
 	}
 	
 	@PostMapping
+	@ApiOperation("Cadastrar Autor")
 	public ResponseEntity<AutorDto> inserir(
 			@RequestBody @Valid AutorFormDto autor,
 			UriComponentsBuilder builder){
@@ -61,13 +67,17 @@ public class AutorController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<AutorDto> atualizar(@RequestBody @Valid AutorFormAtualizarDto dto) {
+	@ApiOperation("Atualizar Autor")
+	public ResponseEntity<AutorDto> atualizar(
+			@RequestBody @Valid AutorFormAtualizarDto dto) {
 		AutorDto autor = service.atualizar(dto);
 		return ResponseEntity.ok(autor);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<AutorDto> deletar(@PathVariable Long id) {
+	@ApiOperation("Deletar Autor por id")
+	public ResponseEntity<AutorDto> deletar(
+			@PathVariable Long id) {
 		service.deletar(id);
 		return ResponseEntity.noContent().build();
 	}

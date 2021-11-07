@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import com.wproject.livrariaapi.dto.AutorDto;
@@ -21,7 +22,9 @@ import com.wproject.livrariaapi.repository.AutorRepository;
 public class AutorService {
 	@Autowired
 	private AutorRepository repository;
-	private ModelMapper modelMapper = new ModelMapper();
+	
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	public Page<AutorDto> listar(Pageable page){
 		Page<Autor> autores = repository.findAll(page);
@@ -55,6 +58,7 @@ public class AutorService {
 		Autor autor = repository.findById(id).orElseThrow(()->new EntityNotFoundException());
 		return modelMapper.map(autor, AutorDto.class);
 	}
+	
 	
 	
 }

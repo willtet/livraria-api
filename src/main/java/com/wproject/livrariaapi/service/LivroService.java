@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 
@@ -32,7 +33,8 @@ public class LivroService {
 	@Autowired
 	private AutorRepository repositoryAutor;
 	
-	private ModelMapper modelMapper = new ModelMapper();
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	public Page<LivroDto> listar(Pageable page){
 		Page<Livro> livros = repository.findAll(page);
@@ -42,7 +44,7 @@ public class LivroService {
 	@Transactional
 	public LivroDto inserir(LivroFormDto livros) {
 		try {
-			Autor autor = repositoryAutor.getById(livros.getAutorId());
+			Autor autor = repositoryAutor.findById(livros.getAutorId()).get();
 			Livro livro = modelMapper.map(livros, Livro.class);
 			livro.setId(null);
 			livro.setAutor(autor);
@@ -71,6 +73,7 @@ public class LivroService {
 
 	@Transactional
 	public void deletar(Long id) {
+		Autor a = repositoryAutor.getById(id);
 		repository.deleteById(id);
 	}
 			
