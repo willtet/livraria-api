@@ -36,7 +36,7 @@ public class UsuarioService {
 	private BCryptPasswordEncoder encoder;
 	
 	@Autowired
-	private ModelMapper mapper;
+	private ModelMapper mapper; 
 	
 	@Autowired
 	private EnviadorDeEmail enviarEmail;
