@@ -16,6 +16,8 @@ import com.wproject.livrariaapi.dto.UsuarioDto;
 import com.wproject.livrariaapi.dto.UsuarioFormAtualizarDto;
 import com.wproject.livrariaapi.dto.UsuarioFormDto;
 import com.wproject.livrariaapi.erro.UserAlreadyExistsError;
+import com.wproject.livrariaapi.infra.EnviadorDeEmail;
+import com.wproject.livrariaapi.infra.EnviadorDeEmailReal;
 import com.wproject.livrariaapi.model.Perfil;
 import com.wproject.livrariaapi.model.Usuario;
 import com.wproject.livrariaapi.repository.PerfilRepository;
@@ -35,6 +37,9 @@ public class UsuarioService {
 	
 	@Autowired
 	private ModelMapper mapper;
+	
+	@Autowired
+	private EnviadorDeEmail enviarEmail;
 
 	public Page<UsuarioDto> lerTodos(Pageable paginacao) {
 		Page<Usuario> usuarios = repository.findAll(paginacao);
@@ -54,6 +59,11 @@ public class UsuarioService {
 		user.adicionarPerfil(perfil);
 		
 		repository.save(user);
+		String destinatario = user.getEmail();
+		String assunto = "Não responder - Senha gerado";
+		String mensagem = "Senha gerada automaticamente:"
+				+ "\r\n - "+ dto.getSenha() +" -";
+		enviarEmail.enviarEmail(destinatario, assunto, mensagem);
 		return mapper.map(user, UsuarioDto.class);
 	}
 

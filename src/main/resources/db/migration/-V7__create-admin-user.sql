@@ -1,0 +1,2 @@
+insert into usuarios(nome, login, senha, email) values ("Administrador", "admin", "$2a$12$PiSGExN1bv5FIP4e5i4jkO3lZYSBuH12/k02brStILum/QhRUAsh6", "email@email.com");
+insert into perfis_usuarios values (1,1);
