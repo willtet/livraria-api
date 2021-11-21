@@ -75,11 +75,11 @@ class LivroRepositoryTest {
 				QuantidadePublicadoDto::getQuantidadeLivros, 
 				QuantidadePublicadoDto::getPercentual)
 		.contains(
-				Assertions.tuple("Andre da silva", 2L, 0.28571),
-				Assertions.tuple("Fernanda nogueira", 2L, 0.28571),
-				Assertions.tuple("Juliana Carvalho", 1L, 0.14286),
-				Assertions.tuple("Rita de Assis", 1L, 0.14286),
-				Assertions.tuple("Rodrigo de souza", 1L, 0.14286)
+				Assertions.tuple("Andre da silva", 2L, 0.2857142857142857),
+				Assertions.tuple("Fernanda nogueira", 2L, 0.2857142857142857),
+				Assertions.tuple("Juliana Carvalho", 1L, 0.14285714285714285),
+				Assertions.tuple("Rita de Assis", 1L, 0.14285714285714285),
+				Assertions.tuple("Rodrigo de souza", 1L, 0.14285714285714285)
 				);
 		
 	}
