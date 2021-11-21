@@ -70,7 +70,7 @@ class LivroControllerTest {
 	}
 	
 	@Test
-	void deveriaCadastrarLivroComDadoscompletos() throws Exception {
+	void naoDeveriaCadastrarLivroSemUsuariosNoBanco() throws Exception {
 		//somente com dados em banco de dados
 		String json = "{"
 				+ "\"titulo\": \"A volta dos que não foram\","
@@ -83,8 +83,7 @@ class LivroControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json)
 				.header("Authorization", "Bearer "+ this.token))
-			.andExpect(MockMvcResultMatchers.status().isCreated())
-			.andExpect(MockMvcResultMatchers.header().exists("Location"));
+			.andExpect(MockMvcResultMatchers.status().isInternalServerError());
 	}
 
 }
